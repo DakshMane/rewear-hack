@@ -5,8 +5,15 @@
 ---
 ## Problem-statement : 3 ReWear Platform
 
+---
+## Team Members
+
+Adarsh Shukla - adarsh270505@gmail.com
+Daksh Mane - dakshmane2005@gmail.com
+Ankit Kumawat - kumawatankit231@gmail.com
 
 
+---
 
 # 👚 ReWear – Community Clothing Exchange Platform
 
