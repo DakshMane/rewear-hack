@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './types/AuthContext';
 import { Navbar } from './components/Navbar';
 import { PrivateRoute } from './components/PrivateRoute';
 import { LandingPage } from './pages/LandingPage';
@@ -14,8 +14,8 @@ import { AdminPage } from './pages/AdminPage';
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    
+      
         <div className="min-h-screen bg-gray-50">
           <Navbar />
           <main>
@@ -52,8 +52,8 @@ function App() {
             </Routes>
           </main>
         </div>
-      </Router>
-    </AuthProvider>
+      
+    
   );
 }
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { Star, Heart, MessageCircle, Calendar, Tag, ShoppingBag } from 'lucide-react';
 import { mockItems } from '../data/mockData';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../types/AuthContext';
 
 export function ItemDetailPage() {
   const { id } = useParams();

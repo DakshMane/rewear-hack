@@ -1,18 +1,31 @@
-import React from 'react';
+import React, { useState , useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Star, Calendar, Package, ArrowRight } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../types/AuthContext';
 import { mockItems } from '../data/mockData';
 import { ItemCard } from '../components/ItemCard';
+import {db} from '../firebase'; // Import your Firestore instance
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
 export function DashboardPage() {
+const [userItems , setUserItems] = useState<any[]>([]);
+
   const { user } = useAuth();
 
   if (!user) {
     return <div>Please log in to view your dashboard.</div>;
   }
 
-  const userItems = mockItems.filter(item => item.uploaderId === user.id);
+  useEffect(() => {
+  const fetchItems = async () => {
+    const q = query(collection(db, 'items'), where('uploaderId', '==', user.id));
+    const snapshot = await getDocs(q);
+    const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    setUserItems(items);
+  };
+
+  fetchItems();
+}, [user]);
   const recentItems = userItems.slice(0, 3);
 
   return (
@@ -25,7 +38,7 @@ export function DashboardPage() {
           </h1>
           <p className="text-gray-600">Manage your items and track your swaps</p>
         </div>
-
+          
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow-sm p-6">

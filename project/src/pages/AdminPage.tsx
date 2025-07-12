@@ -1,13 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import { Shield, CheckCircle, XCircle, Eye } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../types/AuthContext';
 import { mockItems } from '../data/mockData';
+import { db } from '../firebase'; // Import your Firestore instance
 import { ItemCard } from '../components/ItemCard';
-
+import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
 export function AdminPage() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<'pending' | 'approved' | 'rejected'>('pending');
+  const [items, setItems] = useState<any[]>([]);
 
+  useEffect(() => {
+  const fetchItems = async () => {
+    const snapshot = await getDocs(collection(db, 'items'));
+    const fetchedItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    setItems(fetchedItems);
+  };
+
+  fetchItems();
+}, []);
   if (!user?.isAdmin) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -21,18 +32,20 @@ export function AdminPage() {
   }
 
   // For demo purposes, we'll simulate different item states
-  const pendingItems = mockItems.filter(item => !item.isApproved);
-  const approvedItems = mockItems.filter(item => item.isApproved);
+  const pendingItems = items.filter(item => item.status === 'pending');
+const approvedItems = items.filter(item => item.status === 'approved');
+const rejectedItems = items.filter(item => item.status === 'rejected');
 
-  const handleApprove = (itemId: string) => {
-    // In a real app, this would update the item status in the database
-    alert(`Item ${itemId} approved!`);
-  };
+ const handleApprove = async (itemId: string) => {
+  await updateDoc(doc(db, 'items', itemId), { status: 'approved' });
+  setItems(prev => prev.map(item => item.id === itemId ? { ...item, status: 'approved' } : item));
+};
 
-  const handleReject = (itemId: string) => {
-    // In a real app, this would update the item status in the database
-    alert(`Item ${itemId} rejected!`);
-  };
+const handleReject = async (itemId: string) => {
+  await updateDoc(doc(db, 'items', itemId), { status: 'rejected' });
+  setItems(prev => prev.map(item => item.id === itemId ? { ...item, status: 'rejected' } : item));
+};
+
 
   const tabs = [
     { key: 'pending', label: 'Pending Review', count: pendingItems.length },
