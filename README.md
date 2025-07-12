@@ -51,8 +51,8 @@ The goal is to reduce the growing problem of textile waste and support a culture
 > Millions of tons of textile waste end up in landfills every year. ReWear aims to tackle this by creating a **community-first reuse platform** that makes clothing exchange seamless, rewarding, and impactful.
 
 ---
-#Link - [Visit](https://rewear-hack-k3xkz9dtt-dakshmanes-projects.vercel.app/)
 
+###Link - https://rewear-hack-k3xkz9dtt-dakshmanes-projects.vercel.app/
 
 
 
